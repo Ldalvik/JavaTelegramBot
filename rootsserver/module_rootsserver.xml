@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="module_rootsserver" default="compile.module.rootsserver">
+  <dirname property="module.rootsserver.basedir" file="${ant.file.module_rootsserver}"/>
+  
+  <property name="module.jdk.home.rootsserver" value="${project.jdk.home}"/>
+  <property name="module.jdk.bin.rootsserver" value="${project.jdk.bin}"/>
+  <property name="module.jdk.classpath.rootsserver" value="${project.jdk.classpath}"/>
+  
+  <property name="compiler.args.rootsserver" value="-encoding UTF-8 -source 1.5 -target 1.5 ${compiler.args}"/>
+  
+  <property name="rootsserver.output.dir" value="${module.rootsserver.basedir}/target/classes"/>
+  <property name="rootsserver.testoutput.dir" value="${module.rootsserver.basedir}/target/test-classes"/>
+  
+  <path id="rootsserver.module.bootclasspath">
+    <!-- Paths to be included in compilation bootclasspath -->
+  </path>
+  
+  <path id="rootsserver.module.production.classpath">
+    <path refid="${module.jdk.classpath.rootsserver}"/>
+    <pathelement location="${basedir}/telegrambots-2.4.4.5-jar-with-dependencies.jar"/>
+    <path refid="library.maven:_org.telegram:telegrambots:2.4.4.5.classpath"/>
+  </path>
+  
+  <path id="rootsserver.runtime.production.module.classpath">
+    <pathelement location="${rootsserver.output.dir}"/>
+    <pathelement location="${basedir}/telegrambots-2.4.4.5-jar-with-dependencies.jar"/>
+    <path refid="library.maven:_org.telegram:telegrambots:2.4.4.5.classpath"/>
+  </path>
+  
+  <path id="rootsserver.module.classpath">
+    <path refid="${module.jdk.classpath.rootsserver}"/>
+    <pathelement location="${rootsserver.output.dir}"/>
+    <pathelement location="${basedir}/telegrambots-2.4.4.5-jar-with-dependencies.jar"/>
+    <path refid="library.maven:_org.telegram:telegrambots:2.4.4.5.classpath"/>
+  </path>
+  
+  <path id="rootsserver.runtime.module.classpath">
+    <pathelement location="${rootsserver.testoutput.dir}"/>
+    <pathelement location="${rootsserver.output.dir}"/>
+    <pathelement location="${basedir}/telegrambots-2.4.4.5-jar-with-dependencies.jar"/>
+    <path refid="library.maven:_org.telegram:telegrambots:2.4.4.5.classpath"/>
+  </path>
+  
+  
+  <patternset id="excluded.from.module.rootsserver">
+    <patternset refid="ignored.files"/>
+  </patternset>
+  
+  <patternset id="excluded.from.compilation.rootsserver">
+    <patternset refid="excluded.from.module.rootsserver"/>
+  </patternset>
+  
+  <path id="rootsserver.module.sourcepath">
+    <dirset dir="${module.rootsserver.basedir}">
+      <include name="src/main/java"/>
+      <include name="src/main/resources"/>
+    </dirset>
+  </path>
+  
+  <path id="rootsserver.module.test.sourcepath">
+    <dirset dir="${module.rootsserver.basedir}">
+      <include name="src/test/java"/>
+    </dirset>
+  </path>
+  
+  
+  <target name="compile.module.rootsserver" depends="compile.module.rootsserver.production,compile.module.rootsserver.tests" description="Compile module rootsserver"/>
+  
+  <target name="compile.module.rootsserver.production" depends="register.custom.compilers" description="Compile module rootsserver; production classes">
+    <mkdir dir="${rootsserver.output.dir}"/>
+    <javac2 destdir="${rootsserver.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.rootsserver}/javac">
+      <compilerarg line="${compiler.args.rootsserver}"/>
+      <bootclasspath refid="rootsserver.module.bootclasspath"/>
+      <classpath refid="rootsserver.module.production.classpath"/>
+      <src refid="rootsserver.module.sourcepath"/>
+      <patternset refid="excluded.from.compilation.rootsserver"/>
+    </javac2>
+    
+    <copy todir="${rootsserver.output.dir}">
+      <fileset dir="${module.rootsserver.basedir}/src/main/java">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+      <fileset dir="${module.rootsserver.basedir}/src/main/resources">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+    </copy>
+  </target>
+  
+  <target name="compile.module.rootsserver.tests" depends="register.custom.compilers,compile.module.rootsserver.production" description="compile module rootsserver; test classes" unless="skip.tests">
+    <mkdir dir="${rootsserver.testoutput.dir}"/>
+    <javac2 destdir="${rootsserver.testoutput.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.rootsserver}/javac">
+      <compilerarg line="${compiler.args.rootsserver}"/>
+      <bootclasspath refid="rootsserver.module.bootclasspath"/>
+      <classpath refid="rootsserver.module.classpath"/>
+      <src refid="rootsserver.module.test.sourcepath"/>
+      <patternset refid="excluded.from.compilation.rootsserver"/>
+    </javac2>
+    
+    <copy todir="${rootsserver.testoutput.dir}">
+      <fileset dir="${module.rootsserver.basedir}/src/test/java">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+    </copy>
+  </target>
+  
+  <target name="clean.module.rootsserver" description="cleanup module">
+    <delete dir="${rootsserver.output.dir}"/>
+    <delete dir="${rootsserver.testoutput.dir}"/>
+  </target>
+</project>
