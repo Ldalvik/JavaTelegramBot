@@ -5,8 +5,8 @@ package setup;
  */
 public class BotConfig {
 
-    public static final String user = "Your_Bots_Username";
+    public static final String user = "root_its_unobb_famBot";
             //"TheEpsilonBot";
-    public static final String token = "123456789:Your_APIKEY";
+    public static final String token = "398803392:AAEpnBaqHJ_xxAYvDsWhXlcO7rRdi_XiXoE";
             //"431886418:AAHHZ6-pFqQoi7ECzkcfGMVMmsbw5Kn8f7g";
 }
